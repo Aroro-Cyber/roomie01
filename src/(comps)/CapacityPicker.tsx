@@ -12,7 +12,7 @@ export function CapacityPicker() {
 	return (
 		<Select>
 			<SelectTrigger className="w-[80px]">
-				<SelectValue placeholder="Capacity" />
+				<SelectValue placeholder="Capacity"/>
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>

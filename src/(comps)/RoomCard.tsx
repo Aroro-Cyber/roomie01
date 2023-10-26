@@ -1,23 +1,53 @@
-import type { RoomType } from "../../types";
+import { AirVent, Tv, Users, Wifi } from "lucide-react";
+import { Button } from "../@/components/ui/button";
+import { RoomType } from "../../types";
 
 export default function RoomCard({
-	id,
 	image,
+	amenities,
 	roomTitle,
 	capacity,
 }: RoomType) {
 	return (
-		<div
-			key={`${id}`}
-			className="w-full h-40 flex rounded-md overflow-hidden ">
+		<div className="w-full h-20 flex rounded-md overflow-hidden md:h-36">
 			<img
-				src={image}
+				src={image!}
 				className="w-1/2 h-full"
 			/>
-			<div className="w-1/2 h-full bg-lime-500 border-2 border-blue-800 border-l-0">
-				<h1>{roomTitle}</h1>
-                {/* TODO:Map through amenities and fix this div the way it displays things*/}
-				<p>Fits {`${capacity}`} people</p>
+			<div className="w-1/2 h-full text-gray-800 border-2 border-blue-800 border-l-0 grid p-0.5">
+				<p className="font-bold text-sm">{roomTitle}</p>
+				<div className="flex gap-1 justify-start">
+					{amenities.map((amenity, i) => {
+						switch (amenity) {
+							case "Free Wi-Fi":
+								return (
+									<i key={amenity[i]}>
+										<Wifi size={13} />
+									</i>
+								);
+							case "Air conditioning":
+								return (
+									<i key={amenity[i]}>
+										<AirVent size={13} />
+									</i>
+								);
+							case "Flat-screen TV":
+								return (
+									<i key={amenity[i]}>
+										<Tv size={13} />
+									</i>
+								);
+						}
+					})}{" "}
+					<p className="text-xs  flex items-start">
+						<i>{`${capacity}`}</i>{" "}
+						<i>
+							<Users size={13} />
+						</i>
+					</p>
+				</div>
+				{/* TODO:Onclick pop up booking details */}
+				<Button size={"sm"}>Book</Button>
 			</div>
 		</div>
 	);

@@ -1,4 +1,4 @@
-import { FileSpreadsheet, Home, MapPin, User } from "lucide-react";
+import { FileSpreadsheet, Home, Plus, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function SideBar() {
@@ -11,8 +11,8 @@ export default function SideBar() {
 						color="white"
 					/>
 				</Link>
-				<Link to={"/home/location"}>
-					<MapPin
+				<Link to={"/home/add_rooms"}>
+					<Plus
 						size={18}
 						color="white"
 					/>
