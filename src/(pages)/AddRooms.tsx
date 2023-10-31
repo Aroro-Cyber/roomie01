@@ -2,7 +2,6 @@ import { useState } from "react";
 import { AmenitiesPicker } from "../(comps)/AmenitiesPicker";
 import { CapacityPicker } from "../(comps)/CapacityPicker";
 import RoomCard from "../(comps)/RoomCard";
-import { RoomType } from "../../types";
 import { Button } from "../@/components/ui/button";
 import {
 	Card,
@@ -14,17 +13,18 @@ import {
 } from "../@/components/ui/card";
 import { Input } from "../@/components/ui/input";
 import { Label } from "../@/components/ui/label";
-
-export const data: RoomType = {
-	id: 2,
-	image: "/roomImg.webp",
-	roomTitle: "Room 2",
-	amenities: ["Free Wi-Fi", "Air conditioning", "Flat-screen TV"],
-	capacity: 3,
-};
+import { useCapacity } from "../(hooks)/useCapacity";
+import { useAmenities } from "../(hooks)/useAmenities";
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { useToast } from "../@/components/ui/use-toast";
 
 export default function AddRooms() {
+	const { capacity } = useCapacity();
+	const { amenities } = useAmenities();
+
 	const [image, setImage] = useState(null);
+	const [roomTitle, setRoomTitle] = useState("");
 
 	const handleFileChange = (e: any) => {
 		const file = e.target.files[0];
@@ -39,6 +39,29 @@ export default function AddRooms() {
 		}
 	};
 
+	const mutation = useMutation({
+		mutationKey: ["savingMutationKey"],
+		mutationFn: async () => {
+			return await axios.post(
+				"http://localhost:8080/api/v1/room",
+				{
+					capacity: capacity,
+					roomTitle: roomTitle,
+					amenities: amenities,
+					image: `${image}`,
+				},
+				{
+					headers: {
+						"Access-Control-Allow-Origin": "*",
+						"Content-Type": "application/json",
+					},
+				}
+			);
+		},
+	});
+
+	const { toast } = useToast();
+
 	return (
 		<div className="w-full h-full p-0.5">
 			<Card>
@@ -50,13 +73,17 @@ export default function AddRooms() {
 				</CardHeader>
 				<CardContent className="space-y-2">
 					<div className="space-y-1 sm:w-1/4">
-						<RoomCard
-							{...data}
-							image={image as unknown as string}
-						/>
+						{image && (
+							<RoomCard
+								amenities={amenities}
+								capacity={capacity}
+								roomTitle={roomTitle}
+								image={image}
+							/>
+						)}
 					</div>
 				</CardContent>
-				<CardContent className="space-y-2">
+				<CardContent className="space-y-1">
 					<div className="space-y-1">
 						<Label htmlFor="image">Image:</Label>
 						<Input
@@ -70,6 +97,8 @@ export default function AddRooms() {
 						<Input
 							id="room_title"
 							placeholder="KCA Amphitheatre..."
+							value={roomTitle}
+							onChange={(e: any) => setRoomTitle(e.target.value)}
 						/>
 					</div>
 					<div className="space-y-1 flex justify-start items-center gap-2">
@@ -80,7 +109,17 @@ export default function AddRooms() {
 					</div>
 				</CardContent>
 				<CardFooter>
-					<Button>Save room</Button>
+					<Button
+						onClick={() => {
+							mutation.mutate();
+							mutation &&
+							toast({
+								className: "bg-green-600 text-white",
+								description: `${roomTitle} has been saved successfully!.`,
+							});
+						}}>
+						{mutation.isPending ? "Saving..." : "Save"}
+					</Button>
 				</CardFooter>
 			</Card>
 		</div>

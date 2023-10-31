@@ -1,4 +1,4 @@
-import { FileSpreadsheet, Home, Plus, User } from "lucide-react";
+import { FileEdit, Home, Plus, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function SideBar() {
@@ -17,8 +17,8 @@ export default function SideBar() {
 						color="white"
 					/>
 				</Link>
-				<Link to={"/home/booking"}>
-					<FileSpreadsheet
+				<Link to={"/home/edit_rooms"}>
+					<FileEdit
 						size={18}
 						color="white"
 					/>

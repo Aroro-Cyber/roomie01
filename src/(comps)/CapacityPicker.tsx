@@ -1,3 +1,4 @@
+import { useCapacity } from "../(hooks)/useCapacity";
 import {
 	Select,
 	SelectContent,
@@ -9,10 +10,16 @@ import {
 } from "../@/components/ui/select";
 
 export function CapacityPicker() {
+	const { setCapacity } = useCapacity();
+
+	const handleChange = (capacity: string) => {
+		setCapacity(Number(capacity));
+	};
+
 	return (
-		<Select>
+		<Select onValueChange={handleChange}>
 			<SelectTrigger className="w-[80px]">
-				<SelectValue placeholder="Capacity"/>
+				<SelectValue placeholder="Capacity" />
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>

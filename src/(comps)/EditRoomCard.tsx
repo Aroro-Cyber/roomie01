@@ -1,13 +1,30 @@
-import { AirVent, Tv, Users, Wifi } from "lucide-react";
+import { AirVent, Tv, Users, Wifi, X } from "lucide-react";
 import { Button } from "../@/components/ui/button";
 import { RoomType } from "../../types";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useToast } from "../@/components/ui/use-toast";
+import { EditPopover } from "./EditPopover";
 
-export default function RoomCard({
+export default function EditRoomCard({
+	id,
 	image,
 	amenities,
 	roomTitle,
 	capacity,
 }: RoomType) {
+	
+	const { toast } = useToast();
+
+	const deleteMutation = useMutation({
+		mutationKey: ["EditMutationKey"],
+		mutationFn: async (id: Number) => {
+			return await axios.delete(`http://localhost:8080/api/v1/room/${id}`);
+		},
+	});
+
+
+
 	return (
 		<div className="w-full h-20 flex rounded-md overflow-hidden md:h-36">
 			<img
@@ -19,7 +36,6 @@ export default function RoomCard({
 				<div className="flex gap-1 justify-start">
 					{amenities &&
 						amenities.map((amenity) => {
-							
 							switch (amenity) {
 								case "FreeWiFi":
 									return (
@@ -48,8 +64,25 @@ export default function RoomCard({
 						</i>
 					</p>
 				</div>
-				{/* TODO:Onclick pop up booking details */}
-				<Button size={"sm"}>Book</Button>
+				<div className="flex gap-1">
+					{/* @ts-ignore */}
+					<EditPopover id={"13"}/>
+					<Button
+						className="bg-red-500"
+						size={"sm"}
+						onClick={() => {
+							id && deleteMutation.mutate(id);
+							deleteMutation &&
+								toast({
+									className: "bg-red-200 text-white",
+									description: `${roomTitle} has been deleted.`,
+								});
+
+							
+						}}>
+						<X size={10} />
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

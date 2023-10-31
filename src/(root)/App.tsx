@@ -10,13 +10,14 @@ import Home from "../(pages)/Home";
 import SignUpPage from "../(comps)/SignUpPage";
 import SignInPage from "../(comps)/SignInPage";
 import Hero from "../(pages)/Hero";
-import Booking from "../(pages)/Booking";
 import Profile from "../(pages)/Profile";
 import AddRooms from "../(pages)/AddRooms";
 import {
 	QueryClient,
 	QueryClientProvider,
 } from "@tanstack/react-query";
+import EditRooms from "../(pages)/EditRooms";
+import { Toaster } from "../@/components/ui/toaster";
 
 const queryClient = new QueryClient();
 
@@ -66,8 +67,8 @@ export default function MyPage() {
 							element={<AddRooms />}
 						/>
 						<Route
-							path="booking"
-							element={<Booking />}
+							path="edit_rooms"
+							element={<EditRooms />}
 						/>
 						<Route
 							path="profile"
@@ -75,6 +76,7 @@ export default function MyPage() {
 						/>
 					</Route>
 				</Routes>
+				<Toaster/>
 			</ClerkProvider>
 		</QueryClientProvider>
 	);
