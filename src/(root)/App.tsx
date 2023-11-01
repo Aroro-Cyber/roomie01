@@ -47,7 +47,7 @@ export default function MyPage() {
 						element={<SignUpPage />}
 					/>
 					<Route
-						path="home"
+						path="/home"
 						element={
 							<>
 								<SignedIn>
