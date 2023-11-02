@@ -41,7 +41,7 @@ export function EditPopover(passedId:Number) {
 			mutationKey: ["updatingMutationKey"],
 			mutationFn: async (id:Number) => {
 				return await axios.put(
-					`http://localhost:8080/api/v1/room/${id}`,
+					`${import.meta.env.VITE_API_URL}/${id}`,
 					{
 						capacity: capacity,
 						roomTitle: roomTitle,

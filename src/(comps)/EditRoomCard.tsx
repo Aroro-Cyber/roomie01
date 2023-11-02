@@ -19,7 +19,7 @@ export default function EditRoomCard({
 	const deleteMutation = useMutation({
 		mutationKey: ["EditMutationKey"],
 		mutationFn: async (id: Number) => {
-			return await axios.delete(`http://localhost:8080/api/v1/room/${id}`);
+			return await axios.delete(`${import.meta.env.VITE_API_URL}/${id}`);
 		},
 	});
 
