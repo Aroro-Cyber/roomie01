@@ -1,7 +1,7 @@
 import { AirVent, Tv, Users, Wifi, X } from "lucide-react";
 import { Button } from "../@/components/ui/button";
 import { RoomType } from "../../types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "../@/components/ui/use-toast";
 import { EditPopover } from "./EditPopover";
@@ -13,17 +13,28 @@ export default function EditRoomCard({
 	roomTitle,
 	capacity,
 }: RoomType) {
-	
+	const queryClient = useQueryClient();
 	const { toast } = useToast();
 
-	const deleteMutation = useMutation({
-		mutationKey: ["EditMutationKey"],
+	const { mutate} = useMutation({
+		mutationKey: ["deletingMutationKey"],
 		mutationFn: async (id: Number) => {
 			return await axios.delete(`${import.meta.env.VITE_API_URL}/${id}`);
 		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["getRoomsKey"] });
+			toast({
+				className: "bg-green-700 text-white",
+				description: `${roomTitle} has been deleted successfully!`,
+			});
+		},
+		onError: () => {
+			toast({
+				className: "bg-red-700 text-white",
+				description: `An Error occured deleting ${roomTitle}!.`,
+			});
+		},
 	});
-
-
 
 	return (
 		<div className="w-full h-20 flex rounded-md overflow-hidden md:h-36">
@@ -66,19 +77,12 @@ export default function EditRoomCard({
 				</div>
 				<div className="flex gap-1">
 					{/* @ts-ignore */}
-					<EditPopover id={"13"}/>
+					<EditPopover id={id} />
 					<Button
 						className="bg-red-500"
 						size={"sm"}
 						onClick={() => {
-							id && deleteMutation.mutate(id);
-							deleteMutation &&
-								toast({
-									className: "bg-red-200 text-white",
-									description: `${roomTitle} has been deleted.`,
-								});
-
-							
+							id && mutate(id);
 						}}>
 						<X size={10} />
 					</Button>

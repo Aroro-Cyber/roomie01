@@ -39,7 +39,9 @@ export default function AddRooms() {
 		}
 	};
 
-	const mutation = useMutation({
+	const { toast } = useToast();
+
+	const { mutate, isPending } = useMutation({
 		mutationKey: ["savingMutationKey"],
 		mutationFn: async () => {
 			return await axios.post(
@@ -58,9 +60,19 @@ export default function AddRooms() {
 				}
 			);
 		},
+		onSuccess: () => {
+			toast({
+				className: "bg-green-700 text-white",
+				description: `${roomTitle} has been saved successfully!.`,
+			});
+		},
+		onError: () => {
+			toast({
+				className: "bg-red-700 text-white",
+				description: `An Error occured saving ${roomTitle}!.`,
+			});
+		},
 	});
-
-	const { toast } = useToast();
 
 	return (
 		<div className="w-full h-full p-0.5">
@@ -111,14 +123,9 @@ export default function AddRooms() {
 				<CardFooter>
 					<Button
 						onClick={() => {
-							mutation.mutate();
-							mutation &&
-							toast({
-								className: "bg-green-600 text-white",
-								description: `${roomTitle} has been saved successfully!.`,
-							});
+							mutate();
 						}}>
-						{mutation.isPending ? "Saving..." : "Save"}
+						{isPending ? "Saving..." : "Save"}
 					</Button>
 				</CardFooter>
 			</Card>

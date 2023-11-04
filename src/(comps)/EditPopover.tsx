@@ -10,55 +10,59 @@ import {
 import { Card, CardContent, CardFooter } from "../@/components/ui/card";
 import { useToast } from "../@/components/ui/use-toast";
 import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AmenitiesPicker } from "./AmenitiesPicker";
 import { CapacityPicker } from "./CapacityPicker";
 import { useAmenities } from "../(hooks)/useAmenities";
 import { useCapacity } from "../(hooks)/useCapacity";
 import { useState } from "react";
+import { RoomType } from "../../types";
 
-export function EditPopover(passedId:Number) {
-		const { capacity } = useCapacity();
-		const { amenities } = useAmenities();
+export function EditPopover(passedId: Number) {
+	const { capacity } = useCapacity();
+	const { amenities } = useAmenities();
 
-		const [image, setImage] = useState(null);
-		const [roomTitle, setRoomTitle] = useState("");
+	const [image, setImage] = useState(null);
+	const [roomTitle, setRoomTitle] = useState("");
 
-		const handleFileChange = (e: any) => {
-			const file = e.target.files[0];
+	const handleFileChange = (e: any) => {
+		const file = e.target.files[0];
 
-			if (file) {
-				//@ts-ignore
-				const reader = new FileReader();
-				reader.onload = (e: any) => {
-					setImage(e.target.result);
-				};
-				reader.readAsDataURL(file);
-			}
-		};
+		if (file) {
+			//@ts-ignore
+			const reader = new FileReader();
+			reader.onload = (e: any) => {
+				setImage(e.target.result);
+			};
+			reader.readAsDataURL(file);
+		}
+	};
+	const queryClient = useQueryClient();
+	const { toast } = useToast();
 
-		const updateMutation = useMutation({
-			mutationKey: ["updatingMutationKey"],
-			mutationFn: async (id:Number) => {
-				return await axios.put(
-					`${import.meta.env.VITE_API_URL}/${id}`,
-					{
-						capacity: capacity,
-						roomTitle: roomTitle,
-						amenities: amenities,
-						image: `${image}`,
-					},
-					{
-						headers: {
-							"Access-Control-Allow-Origin": "*",
-							"Content-Type": "application/json",
-						},
-					}
-				);
-			},
-		});
+	const { mutate, isPending } = useMutation({
+		mutationKey: ["updatingMutationKey"],
+		mutationFn: async (roomData: RoomType) => {
+			return await axios.put(
+				`${import.meta.env.VITE_API_URL}/${Object.values(passedId)}`,
+				roomData
+			);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["getRoomsKey"] });
+			toast({
+				className: "bg-green-700 text-white",
+				description: `${roomTitle} has been updated successfully!.`,
+			});
+		},
+		onError: () => {
+			toast({
+				className: "bg-red-700 text-white",
+				description: `An Error occured updating ${roomTitle}!.`,
+			});
+		},
+	});
 
-		const { toast } = useToast();
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
@@ -99,14 +103,9 @@ export function EditPopover(passedId:Number) {
 					<CardFooter>
 						<Button
 							onClick={() => {
-								updateMutation.mutate(passedId);
-								updateMutation &&
-									toast({
-										className: "bg-green-600 text-white",
-										description: `${roomTitle} has been saved successfully!.`,
-									});
+								image && mutate({ image, amenities, capacity, roomTitle });
 							}}>
-							{updateMutation.isPending ? "Updating..." : "Update"}
+							{isPending ? "Updating..." : "Update"}
 						</Button>
 					</CardFooter>
 				</Card>
