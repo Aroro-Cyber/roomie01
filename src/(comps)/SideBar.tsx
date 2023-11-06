@@ -1,4 +1,4 @@
-import { FileEdit, Home, Plus, User } from "lucide-react";
+import { BookText, FileEdit, Home, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function SideBar() {
@@ -24,8 +24,8 @@ export default function SideBar() {
 					/>
 				</Link>
 
-				<Link to={"/home/profile"}>
-					<User
+				<Link to={"/home/booking"}>
+					<BookText
 						size={18}
 						color="white"
 					/>

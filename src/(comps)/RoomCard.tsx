@@ -1,6 +1,6 @@
 import { AirVent, Tv, Users, Wifi } from "lucide-react";
-import { Button } from "../@/components/ui/button";
 import { RoomType } from "../../types";
+import { BookingPopover } from "./BookingPopover";
 
 export default function RoomCard({
 	image,
@@ -19,7 +19,6 @@ export default function RoomCard({
 				<div className="flex gap-1 justify-start">
 					{amenities &&
 						amenities.map((amenity) => {
-							
 							switch (amenity) {
 								case "FreeWiFi":
 									return (
@@ -40,7 +39,7 @@ export default function RoomCard({
 										</i>
 									);
 							}
-						})}{" "}
+						})}
 					<p className="text-xs  flex items-start">
 						<i>{`${capacity}`}</i>
 						<i>
@@ -48,8 +47,7 @@ export default function RoomCard({
 						</i>
 					</p>
 				</div>
-				{/* TODO:Onclick pop up booking details */}
-				<Button size={"sm"}>Book</Button>
+				<BookingPopover />
 			</div>
 		</div>
 	);
