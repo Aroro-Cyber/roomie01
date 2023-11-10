@@ -3,5 +3,5 @@ import { useCapacityType } from "../../types";
 
 export const useCapacity = create<useCapacityType>((set) => ({
 	capacity: 0,
-	setCapacity: (newCapacity:Number) => set({ capacity: newCapacity }),
+	setCapacity: (newCapacity:number) => set({ capacity: newCapacity }),
 }));

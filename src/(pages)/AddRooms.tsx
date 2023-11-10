@@ -45,7 +45,7 @@ export default function AddRooms() {
 		mutationKey: ["savingMutationKey"],
 		mutationFn: async () => {
 			return await axios.post(
-				`${import.meta.env.VITE_API_URL}`,
+				`${import.meta.env.VITE_API_URL}/room`,
 				{
 					capacity: capacity,
 					roomTitle: roomTitle,

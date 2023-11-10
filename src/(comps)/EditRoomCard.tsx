@@ -18,8 +18,8 @@ export default function EditRoomCard({
 
 	const { mutate} = useMutation({
 		mutationKey: ["deletingMutationKey"],
-		mutationFn: async (id: Number) => {
-			return await axios.delete(`${import.meta.env.VITE_API_URL}/${id}`);
+		mutationFn: async (id: number) => {
+			return await axios.delete(`${import.meta.env.VITE_API_URL}/room/${id}`);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["getRoomsKey"] });

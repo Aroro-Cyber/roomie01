@@ -3,6 +3,7 @@ import { RoomType } from "../../types";
 import { BookingPopover } from "./BookingPopover";
 
 export default function RoomCard({
+	id,
 	image,
 	amenities,
 	roomTitle,
@@ -47,7 +48,8 @@ export default function RoomCard({
 						</i>
 					</p>
 				</div>
-				<BookingPopover />
+				{/* @ts-ignore */}
+				<BookingPopover passedId={id && id}/>
 			</div>
 		</div>
 	);

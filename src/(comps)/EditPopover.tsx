@@ -18,7 +18,7 @@ import { useCapacity } from "../(hooks)/useCapacity";
 import { useState } from "react";
 import { RoomType } from "../../types";
 
-export function EditPopover(passedId: Number) {
+export function EditPopover(passedId: number) {
 	const { capacity } = useCapacity();
 	const { amenities } = useAmenities();
 
@@ -44,7 +44,7 @@ export function EditPopover(passedId: Number) {
 		mutationKey: ["updatingMutationKey"],
 		mutationFn: async (roomData: RoomType) => {
 			return await axios.put(
-				`${import.meta.env.VITE_API_URL}/${Object.values(passedId)}`,
+				`${import.meta.env.VITE_API_URL}/room/${Object.values(passedId)}`,
 				roomData
 			);
 		},

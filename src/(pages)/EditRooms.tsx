@@ -8,7 +8,7 @@ export default function EditRooms() {
 	const { data } = useQuery({
 		queryKey: ["getRoomsKey"],
 		queryFn: async (): Promise<RoomType[]> => {
-			const { data } = await axios.get(`${import.meta.env.VITE_API_URL}`);
+			const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/room`);
 
 			return data;
 		},

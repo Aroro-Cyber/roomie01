@@ -1,27 +1,36 @@
-# React + TypeScript + Vite
+# Roomie01 WebApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of a booking app where users can see and book the available rooms.
 
-Currently, two official plugins are available:
+The admins can add,edit and delete rooms,they can also see the room booking.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Techstack Used
+The following technologies were used in the development of this app:
 
-## Expanding the ESLint configuration
+* [React Js](https://react.dev/)
+* [Vite](https://vitejs.dev/)
+* [Typescript](https://www.typescriptlang.org/)
+* [Shadcn UI](https://ui.shadcn.com/)
+* [Tailwind](https://tailwindcss.com/)
+* [Lucide](https://lucide.dev/)
+* [Clerk](https://clerk.com/)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+# How to run the app
 
-- Configure the top-level `parserOptions` property like this:
+1. Open the app in the IDE of your choice.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+2. Open the terminal and git clone the master branch.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+3. Make a `.env` file in the root folder and copy the `.env.example`.
+
+4. Get the Clerk ApiKey from [Clerk](https://clerk.com/) and fill the `.env` values respectively. 
+
+5. Make sure you have [node](https://nodejs.org/en/) or [bun](https://bun.sh/) installed.
+
+6. Run `npm install ` or `bun install` in the terminal. This will install all dependencies.
+
+7. While still in the terminal , run `npm run dev` or `bun run dev`.
+
+8. The server will start on `http://localhost:5173` on your browser
+
+9. Hit `http://localhost:5173` to get the welcome page.
