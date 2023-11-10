@@ -17,7 +17,7 @@ The following technologies were used in the development of this app:
 
 # How to run the app
 
-1. Open the app in the IDE of your choice.
+1. Open the IDE of your choice.
 
 2. Open the terminal and git clone the master branch.
 
