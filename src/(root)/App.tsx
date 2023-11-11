@@ -16,8 +16,10 @@ import {
 	QueryClientProvider,
 } from "@tanstack/react-query";
 import EditRooms from "../(pages)/EditRooms";
-import { Toaster } from "../@/components/ui/toaster";
+import { Toaster } from "sonner"
 import Booking from "../(pages)/Booking";
+import ContactPage from "../(pages)/ContactPage";
+import UserBooking from "../(pages)/UserBooking";
 
 const queryClient = new QueryClient();
 
@@ -74,9 +76,17 @@ export default function MyPage() {
 							path="booking"
 							element={<Booking />}
 						/>
+						<Route
+							path="contact_us"
+							element={<ContactPage />}
+						/>
+						<Route
+							path="user_booking"
+							element={<UserBooking />}
+						/>
 					</Route>
 				</Routes>
-				<Toaster/>
+				<Toaster richColors />
 			</ClerkProvider>
 		</QueryClientProvider>
 	);

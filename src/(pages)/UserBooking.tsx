@@ -4,8 +4,11 @@ import { bookingType } from "../../types";
 import { Button } from "../@/components/ui/button";
 import { toast } from "sonner";
 import { X } from "lucide-react";
+import { useFilter } from "react-aria";
+import { useUser } from "@clerk/clerk-react";
 
-export default function Booking() {
+export default function UserBooking() {
+	const { user } = useUser();
 	const queryClient = useQueryClient();
 
 	const { data } = useQuery({
@@ -17,6 +20,17 @@ export default function Booking() {
 			return await data;
 		},
 	});
+
+	let { contains } = useFilter({
+		sensitivity: "base",
+	});
+
+	let filteredData = data?.filter((booking) =>
+		contains(
+			booking.customerEmail,
+			`${user && user.primaryEmailAddress?.emailAddress}`
+		)
+	);
 
 	const { mutate } = useMutation({
 		mutationKey: ["deleteBookingKey"],
@@ -39,8 +53,8 @@ export default function Booking() {
 			<h1 className="flex justify-center items-center font-black">Bookings</h1>
 			<div className="w-full h-full grid p-5 sm:p-1 sm:grid-cols-2 gap-1 lg:grid-cols-4 overflow-y-scroll">
 				{/* @ts-ignore */}
-				{data &&
-					data.map((booking, index) => (
+				{filteredData &&
+					filteredData.map((booking, index) => (
 						<div
 							key={index}
 							className="w-full max-h-60 rounded-md border-2 flex flex-col gap-1 relative">
@@ -77,7 +91,7 @@ export default function Booking() {
 								className="w-10 place-self-end bg-red-600 m-2 absolute"
 								size={"sm"}
 								onClick={() => mutate(booking.id!)}>
-								<X size={20}/>
+								<X size={20} />
 							</Button>
 						</div>
 					))}

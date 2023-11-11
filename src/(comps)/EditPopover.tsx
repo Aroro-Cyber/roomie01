@@ -8,7 +8,6 @@ import {
 	PopoverTrigger,
 } from "../@/components/ui/popover";
 import { Card, CardContent, CardFooter } from "../@/components/ui/card";
-import { useToast } from "../@/components/ui/use-toast";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AmenitiesPicker } from "./AmenitiesPicker";
@@ -17,6 +16,7 @@ import { useAmenities } from "../(hooks)/useAmenities";
 import { useCapacity } from "../(hooks)/useCapacity";
 import { useState } from "react";
 import { RoomType } from "../../types";
+import { toast } from "sonner";
 
 export function EditPopover(passedId: number) {
 	const { capacity } = useCapacity();
@@ -38,7 +38,6 @@ export function EditPopover(passedId: number) {
 		}
 	};
 	const queryClient = useQueryClient();
-	const { toast } = useToast();
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ["updatingMutationKey"],
@@ -50,16 +49,10 @@ export function EditPopover(passedId: number) {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["getRoomsKey"] });
-			toast({
-				className: "bg-green-700 text-white",
-				description: `${roomTitle} has been updated successfully!.`,
-			});
+			toast.success(`${roomTitle} has been updated successfully!.`);
 		},
 		onError: () => {
-			toast({
-				className: "bg-red-700 text-white",
-				description: `An Error occured updating ${roomTitle}!.`,
-			});
+			toast.error(`An Error occured updating ${roomTitle}!.`);
 		},
 	});
 

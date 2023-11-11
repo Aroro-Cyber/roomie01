@@ -17,7 +17,7 @@ import { useCapacity } from "../(hooks)/useCapacity";
 import { useAmenities } from "../(hooks)/useAmenities";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { useToast } from "../@/components/ui/use-toast";
+import { toast } from "sonner";
 
 export default function AddRooms() {
 	const { capacity } = useCapacity();
@@ -39,8 +39,6 @@ export default function AddRooms() {
 		}
 	};
 
-	const { toast } = useToast();
-
 	const { mutate, isPending } = useMutation({
 		mutationKey: ["savingMutationKey"],
 		mutationFn: async () => {
@@ -61,16 +59,10 @@ export default function AddRooms() {
 			);
 		},
 		onSuccess: () => {
-			toast({
-				className: "bg-green-700 text-white",
-				description: `${roomTitle} has been saved successfully!.`,
-			});
+			toast.success(`${roomTitle} has been saved successfully!.`);
 		},
 		onError: () => {
-			toast({
-				className: "bg-red-700 text-white",
-				description: `An Error occured saving ${roomTitle}!.`,
-			});
+			toast.error(`An Error occured saving ${roomTitle}!.`);
 		},
 	});
 

@@ -21,7 +21,9 @@ export type useAmenitiesType = {
 };
 
 export type bookingType = {
-	id: number;
+	id?: number;
+	fromTime: string;
+	toTime: string;
 	checkIn: string;
 	checkOut: string;
 	customerEmail: string;
@@ -47,3 +49,5 @@ export type useSearchValueType = {
 	value: string;
 	setValue: (newValue: string) => void;
 };
+
+

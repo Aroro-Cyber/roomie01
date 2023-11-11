@@ -1,4 +1,3 @@
-import { UserCircle2 } from "lucide-react";
 import { Button } from "../@/components/ui/button";
 import {
 	Popover,
@@ -11,11 +10,12 @@ import { useMutation } from "@tanstack/react-query";
 import { bookingType } from "../../types";
 import axios from "axios";
 import { useDate } from "../(hooks)/useDate";
-import { useToast } from "../@/components/ui/use-toast";
+import { FromTimePicker, ToTimePicker } from "./TimePicker";
+import { toast } from "sonner";
+import { useFromTime, useToTime } from "../(hooks)/useTime";
 
 export function BookingPopover(passedId: number) {
 	const { date } = useDate();
-	const { toast } = useToast();
 	const { mutate, isPending } = useMutation({
 		mutationKey: ["bookRoom"],
 		mutationFn: async (booking: bookingType) => {
@@ -24,20 +24,16 @@ export function BookingPopover(passedId: number) {
 			});
 		},
 		onSuccess: () => {
-			toast({
-				className: "bg-green-700 text-white",
-				description: "Booked successfully!",
-			});
+			toast.success("Booked successfully!");
 		},
 		onError: () => {
-			toast({
-				className: "bg-red-700 text-white",
-				description: `An Error occured while booking!.`,
-			});
+			toast.error(`An Error occured while booking!.`);
 		},
 	});
 
 	const { user } = useUser();
+	const { value: fromTimeValue } = useFromTime();
+	const { value: toTimeValue } = useToTime();
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
@@ -52,19 +48,18 @@ export function BookingPopover(passedId: number) {
 					<div className="space-y-2">
 						<DatePicker />
 					</div>
-					<div className=" flex items-center gap-1">
-						<i>
-							<UserCircle2 size={13} />
-						</i>
-						<p className="text-sm">
-							{user && user.primaryEmailAddress?.emailAddress}
-						</p>
+					<div className="flex gap-2">
+						<FromTimePicker />
+						<ToTimePicker />
 					</div>
+
 					<div className="space-y-2">
 						<Button
 							onClick={() =>
 								user &&
 								mutate({
+									fromTime: `${fromTimeValue}`,
+									toTime: `${toTimeValue}`,
 									checkIn: `${date.from.toISOString().slice(0, 10)}`,
 									checkOut: `${date.to.toISOString().slice(0, 10)}`,
 									customerEmail: `${user.primaryEmailAddress?.emailAddress}`,

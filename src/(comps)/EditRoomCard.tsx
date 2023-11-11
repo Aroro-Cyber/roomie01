@@ -1,9 +1,9 @@
-import { AirVent, Tv, Users, Wifi, X } from "lucide-react";
-import { Button } from "../@/components/ui/button";
 import { RoomType } from "../../types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useToast } from "../@/components/ui/use-toast";
+import { Wifi, AirVent, Tv, Users, X } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "../@/components/ui/button";
 import { EditPopover } from "./EditPopover";
 
 export default function EditRoomCard({
@@ -14,25 +14,18 @@ export default function EditRoomCard({
 	capacity,
 }: RoomType) {
 	const queryClient = useQueryClient();
-	const { toast } = useToast();
 
-	const { mutate} = useMutation({
+	const { mutate } = useMutation({
 		mutationKey: ["deletingMutationKey"],
 		mutationFn: async (id: number) => {
 			return await axios.delete(`${import.meta.env.VITE_API_URL}/room/${id}`);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["getRoomsKey"] });
-			toast({
-				className: "bg-green-700 text-white",
-				description: `${roomTitle} has been deleted successfully!`,
-			});
+			toast.success(`${roomTitle} has been deleted successfully!`);
 		},
 		onError: () => {
-			toast({
-				className: "bg-red-700 text-white",
-				description: `An Error occured deleting ${roomTitle}!.`,
-			});
+			toast.error(`An Error occured deleting ${roomTitle}!.`);
 		},
 	});
 
